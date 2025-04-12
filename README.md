@@ -37,7 +37,7 @@ The first 15 steps below up to creating a treemacs workspace are independent of 
 1. Assign the project number by finding a vacant number in your project database.
 2. Assign a project directory name and create the project directory in the home directory
 3. Navigate to the project directory and run the bash functions `manorg`, `logorg`, and `abiborg` (see the code below). There are analogs for LaTeX if you prefer writing in LaTeX.
-4. Create a subdirectory for storing your figures for this project (e.g., figs0574). You should probably keep these under Version Control, too. You want to keep them out of the way by storing them in the subfolder. Their number may grow over time, even though you may only select a subset for the manuscript. Some of the figures you do not use in the manuscript may be useful in slideshows, or at least they can inspire new and better figures. 
+4. Create a subdirectory for storing your figures for this project (e.g., figs0574). You should keep these under Version Control, too. You want to keep them out of the way by storing them in the subfolder. Their number may grow over time, even though you may only select a subset for the manuscript. Some figures you do not use in the manuscript may be helpful in slideshows, or at least they can inspire new and better figures. 
 5. Set up the push function for the project while also creating a repository subfolder in 6114BlaineMooersLabGitHubRepos, which is where I store all the local repositories for the corresponding repositories on my private GitHub site. Run that alias `epa` to open up the collection of push functions and add a new one.
 6. Navigate to the repository folder and run the function commands individually as you edit them.
 7. Create a README.md by using the touch command, and then populate the README.md file with the contents inserted by the `insert readme` voice snippet. I run this voice snippet in my online accounts for 750Words (or Write Honey if I have exceeded the daily 5000-word limit of 750words). 
@@ -50,13 +50,13 @@ The first 15 steps below up to creating a treemacs workspace are independent of 
 14. Now you must commit the remaining subfolders and files in the local folder and then push these to the remote repository. You do this by sourcing the plain text file that stores the push functions by running the alias `sz`, which sources the `.zshrc` file that, in turn, sources all the files that contain Bash aliases and functions.
 15. Run the push function for the project (e.g., p0574) to push the remaining files and folders to the remote repository.
 16. Run the command to create a treemacs workspace (C-c C-w a) and paste the project directory name.
-17. Now switch to this new project (C-c C-w s). You will be prompted for the directory for this project. It will default to the current directory, which is often incorrect. You can backspace over the current project directory and use autocompletion to insert the desired project directory.
+17. Now switch to this new project (C-c C-w s). Just so you know, you will be prompted for the directory for this project. It will default to the current directory, which is often incorrect. You can backspace over the current project directory and use autocompletion to insert the desired project directory.
 18. Open the new project.s log file and start filling out the project initialization information. This part of the project can take 3 to 5 hours to do well. You can postpone doing this to a later point, but it is best to tackle this as soon as possible before you can try to do any writing in the manuscript. 
-19. Record a diary entry for the current date in the daily log section, and note that one of your accomplishments was creating this project.
+19. Record a diary entry for the current date in the daily log section and note that one of your accomplishments was creating this project.
 20. Record your effort on this project in your time-tracking database. Time tracking is a hard habit to adopt, but if you do not measure your time, you cannot manage it well. It isn't easy to manage things that you do not measure. 
 21. If you care about your daily word count, turn on `wc-mode` and get the initial word count before completing the project initialization information. This mode will report back the change in word count. Tracking word count in this fashion is useful when you are trying to build up a writing habit. 
 
-After years of building a daily writing habit, I find that tracking the time spent on each project is good enough because there is far more to preparing academic documents than just generating words. Those other tasks have to get done, whereas focusing on word count will lead to optimizing for generating prose, which is often not the limiting factor for me. 
+After years of building a daily writing habit, I find that tracking the time spent on each project is good enough because there is far more to preparing academic documents than just generating words. Those other tasks have to be done, whereas focusing on word count will lead to optimizing for generating prose, which is often not my limiting factor. 
 
 Because I dumped most of my writing into 750 Words are Write Honey during the day and then dumped this into a \LaTeX Book Project (2025words) on Overleaf. I use Overleaf to track my word count for the month. A depression in the monthly word count is frequently correlated with a depression in our spent on various writing tasks due to interruptions caused by teaching, service, and the need to do laboratory work. 
 
@@ -84,23 +84,24 @@ gac () {
 }
 ```
 The code for the project-specific push function is below. 
-You can use this as a template to make push functions for new projects
+You can use this as a template to make push functions for new projects.
+Replace `newpaper` with the second half of the project name.
 
 ```bash
 p0574 () {
-	cd ~/6114BlaineMooersLabGitHubRepos/0574ImprovedRNACrystalsByChemMod
-	cp /Users/blaine/0574ImprovedRNACrystalsByChemMod/main0574.org .
-	cp /Users/blaine/0574ImprovedRNACrystalsByChemMod/log0574.org .
-	cp -R /Users/blaine/0574ImprovedRNACrystalsByChemMod/figs/ ./figs/.
-	cp -R /Users/blaine/0574ImprovedRNACrystalsByChemMod/abib0574/ ./abib0574/.
+	cd ~/6114BlaineMooersLabGitHubRepos/0574newpaper
+	cp /Users/blaine/0574newpaper/main0574.org .
+	cp /Users/blaine/0574newpaper/log0574.org .
+	cp -R /Users/blaine/0574newpaper/figs0574/ ./figs0574/.
+	cp -R /Users/blaine/0574newpaper/abib0574/ ./abib0574/.
 	comment="${1:-Updated}"
 	gac main0574.org "$comment"
 	gac log0574.org "$comment"
 	gac ./figs0574/ "$comment"
 	gac ./abib0574/ "$comment"
 	git push
-	echo "Pushed the project 0574 to GitHub."
-	cd /Users/blaine/0574ImprovedRNACrystalsByChemMod
+	echo "Pushed project 0574 to GitHub."
+	cd /Users/blaine/0574newpaper
 	pwd
 }
 ```
@@ -173,6 +174,39 @@ abiborg () {
 	cp ~/6112MooersLabGitHubLabRepos/annotated-bibliography-org/ab0519.org ./abib$1/ab$1.org
 }
 ```
+
+This fundamental-mode yasnippet snippet greatly eases the creation of the push function for a new writing project.
+
+
+```bash
+# -*- mode: snippet -*-
+# name: push-writing-project
+# key: pwp
+# --
+function p${1:0574} () {
+    cd ~/6114BlaineMooersLabGitHubRepos/${2:newpaper}
+    cp /Users/blaine/${2}/main${1}.org .
+    cp /Users/blaine/${2}/log${1}.org .
+    cp -R /Users/blaine/${2}/figs${1}/ ./figs${1}/.
+    cp -R /Users/blaine/${2}/abib${1}/ ./abib${1}/.
+    comment="${3:-Updated}"
+    gac main${1}.org "$comment"
+    gac log${1}.org "$comment"
+    gac ./figs${1}/ "$comment"
+    gac ./abib${1}/ "$comment"
+    git push
+    echo "Pushed the writing project ${1} to GitHub."
+    cd /Users/blaine/${2}
+    pwd
+}
+$0
+
+
+
+
+```
+
+
 ## Status
 
 Ready to use.
